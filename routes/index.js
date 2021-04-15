@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
+const passport = require("passport");
+const auth = passport.authenticate("jwt", { session: false });
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/profile", auth, (req, res, next) => {
+  res.json({
+    message: "You made it to the secure route",
+    user: req.user,
+  });
 });
 
 module.exports = router;
