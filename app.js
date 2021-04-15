@@ -9,10 +9,15 @@ const mongoose = require("mongoose");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 
+// Database connection
 mongoose.connect(config.databaseUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+// suppressing mongoose 5.12.3 depreciation warning
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
 
 var db = mongoose.connection;
 db.then(
@@ -23,7 +28,8 @@ db.then(
     console.log(err);
   }
 );
-
+// Authentication
+require("./auth/auth");
 const app = express();
 
 // view engine setup
@@ -36,6 +42,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// Routes
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
@@ -52,7 +59,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.send(err.message);
 });
 
 module.exports = app;
