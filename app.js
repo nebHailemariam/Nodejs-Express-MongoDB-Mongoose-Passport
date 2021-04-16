@@ -3,10 +3,13 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const config = require("./config");
+const config = require("./config/secrets");
 const mongoose = require("mongoose");
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger-ui");
 
-const indexRouter = require("./routes/index");
+const secureRouter = require("./routes/secure");
 const usersRouter = require("./routes/users");
 
 // Database connection
@@ -42,8 +45,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// create swagger UI document
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Routes
-app.use("/", indexRouter);
+app.use("/", secureRouter);
 app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
