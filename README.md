@@ -10,6 +10,7 @@ To get the application running locally:
 - `npm install` to install all required dependencies
 - Install MongoDB Community Edition ([instructions](https://docs.mongodb.com/manual/installation/#tutorials)) and run it by executing `mongod`
 - `npm start` to start the local server
+- Open `http://localhost:3000/docs/`
 
 ## Application Structure
 
