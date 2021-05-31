@@ -89,3 +89,13 @@ passport.use(
     }
   )
 );
+module.exports = async function isAdmin(req, res, next) {
+  let id = req.user._id;
+  const user = await UserModel.findOne({ _id: id });
+  if (user && user.role === Role.Admin) {
+    next();
+  } else {
+    // return Forbidden
+    res.send(403, "Forbidden");
+  }
+};
