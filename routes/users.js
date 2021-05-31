@@ -51,11 +51,15 @@ var router = express.Router();
  *                     username:
  *                       type: string
  *                       description: The user username.
- *                       example: LeanneGraha
+ *                       example: LeanneGraham
  *                     email:
  *                       type: string
  *                       description: The user email.
  *                       example: LeanneG@gmailcom
+ *                     Role:
+ *                       type: string
+ *                       description: The user role.
+ *                       example: User
  *                     __v:
  *                       type: integer
  *                       description: The user __v.

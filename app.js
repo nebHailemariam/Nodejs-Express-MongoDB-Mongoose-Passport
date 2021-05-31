@@ -8,7 +8,9 @@ const mongoose = require("mongoose");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger-ui");
+const cors = require("cors");
 
+// Routes
 const secureRouter = require("./routes/secure");
 const usersRouter = require("./routes/users");
 
@@ -34,6 +36,22 @@ db.then(
 // Authentication
 require("./auth/auth");
 const app = express();
+
+// Enabling CORS
+var allowedOrigins = ["http://localhost:4200"];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var msg =
+          "The CORS policy for this site does not " +
+          "allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
