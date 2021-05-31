@@ -38,7 +38,7 @@ require("./auth/auth");
 const app = express();
 
 // Enabling CORS
-var allowedOrigins = ["http://localhost:4200"];
+var allowedOrigins = ["http://localhost:4200", "http://localhost:3000"];
 app.use(
   cors({
     origin: function (origin, callback) {
