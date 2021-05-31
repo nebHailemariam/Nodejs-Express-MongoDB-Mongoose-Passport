@@ -12,7 +12,6 @@ passport.use(
       passReqToCallback: true,
     },
     async (req, username, password, done) => {
-      console.log("Here");
       UserModel.findOne({
         $or: [{ username: username }, { email: req.email }],
       }).then(

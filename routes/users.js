@@ -179,9 +179,56 @@ router.post("/login", async (req, res, next) => {
 router.get("/", auth, isAdmin, async (req, res, next) => {
   try {
     UserModel.find().then((users) => {
-      res.json({
-        users: users,
+      users = users.map((user) => {
+        user.password = null;
+        return user;
       });
+      res.json(users);
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * @swagger
+ * /users/user:
+ *   get:
+ *     summary: User
+ *     description: Endpoint for getting user.
+ *     responses:
+ *       200:
+ *         description: Endpoint return the user data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                _id:
+ *                  type: string
+ *                  description: The user ID.
+ *                  example: 60794fbb29a0df9542e73190
+ *                username:
+ *                  type: string
+ *                  description: The user username.
+ *                  example: LeanneGraham
+ *                email:
+ *                  type: string
+ *                  description: The user email.
+ *                  example: LeanneG@gmailcom
+ *                Role:
+ *                  type: string
+ *                  description: The user role.
+ *                  example: User
+ *                __v:
+ *                  type: integer
+ *                  description: The user __v.
+ *                  example: 0
+ */
+router.get("/user", auth, async (req, res, next) => {
+  try {
+    UserModel.findOne({ _id: req.user._id }).then((user) => {
+      res.json(user);
     });
   } catch (error) {
     next(error);
