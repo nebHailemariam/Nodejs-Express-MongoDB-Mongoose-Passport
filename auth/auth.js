@@ -1,6 +1,7 @@
 const passport = require("passport");
 const localStrategy = require("passport-local").Strategy;
 const UserModel = require("../models/users");
+const Role = require("../models/Role");
 
 passport.use(
   "signup",
@@ -11,6 +12,7 @@ passport.use(
       passReqToCallback: true,
     },
     async (req, username, password, done) => {
+      console.log("Here");
       UserModel.findOne({
         $or: [{ username: username }, { email: req.email }],
       }).then(
@@ -20,6 +22,7 @@ passport.use(
               username: username,
               email: req.body.email,
               password: password,
+              role: Role.User,
             }).then(
               (user) => {
                 user = user.toObject();
