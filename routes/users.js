@@ -2,6 +2,8 @@ const config = require("../config/secrets");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const express = require("express");
+const auth = passport.authenticate("jwt", { session: false });
+const isAdmin = require("../auth/auth");
 var router = express.Router();
 
 /**
@@ -124,8 +126,9 @@ router.post("/login", async (req, res, next) => {
 
         const body = { _id: user._id };
         const token = jwt.sign({ user: body }, config.jwtSecret);
+        delete user.password;
 
-        return res.json({ token });
+        return res.json({ token, user });
       });
     } catch (error) {
       return next(error);
@@ -133,8 +136,61 @@ router.post("/login", async (req, res, next) => {
   })(req, res, next);
 });
 
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Users
+ *     description: Endpoint for getting the list of users.
+ *     responses:
+ *       200:
+ *         description: A list of all users.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                         _id:
+ *                           type: string
+ *                           description: The user ID.
+ *                           example: 60794fbb29a0df9542e73190
+ *                         username:
+ *                           type: string
+ *                           description: The user username.
+ *                           example: LeanneGraham
+ *                         email:
+ *                           type: string
+ *                           description: The user email.
+ *                           example: LeanneG@gmailcom
+ *                         Role:
+ *                           type: string
+ *                           description: The user role.
+ *                           example: User
+ *                         __v:
+ *                           type: integer
+ *                           description: The user __v.
+ *                           example: 0
+ */
+router.get("/", auth, isAdmin, async (req, res, next) => {
+  try {
+    UserModel.find().then((users) => {
+      res.json({
+        users: users,
+      });
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 const JWTstrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
+const UserModel = require("../models/users");
 
 passport.use(
   new JWTstrategy(
