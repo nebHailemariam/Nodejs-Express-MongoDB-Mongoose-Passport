@@ -1,7 +1,19 @@
 # Nodejs-Express-MongoDB-Mongoose-Passport-SwaggerUI
+
+<p align="center">
+  <a href="https://patrickjs.com" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/640px-Node.js_logo.svg.png" alt="Node with express Starter" style="background-color:white; width:465px"/>
+  </a><br/>
+  <a href="https://patrickjs.com" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" alt="Node with express Starter" style="background-color:white"/>
+  </a>
+  
+</p>
+
 Nodejs with MongoDB, Mongoose, Passport, and Swagger-UI starter
 
 # Getting started
+
 To get the application running locally:
 
 - Clone this repo
@@ -22,4 +34,4 @@ To get the application running locally:
 
 ## Authentication
 
-Requests are authenticated using the Passport.js authentication middleware. 
+Requests are authenticated using the Passport.js authentication middleware.
